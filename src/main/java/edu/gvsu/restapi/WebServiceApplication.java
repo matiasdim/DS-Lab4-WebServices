@@ -10,6 +10,8 @@ import org.restlet.data.Protocol;
 import org.restlet.Request;
 import org.restlet.Response;
 
+import java.util.Vector;
+
 
 /**
  * This class defines our Application object and starts up a standard-alone HTTP server to processes
@@ -19,6 +21,7 @@ import org.restlet.Response;
  */
 public class WebServiceApplication extends Application {
 
+	Vector<RegistrationInfo> users = new Vector<>();
 
 	public static void main(String[] args) throws Exception {
 
@@ -48,9 +51,9 @@ public class WebServiceApplication extends Application {
 
 		// Have the router, route resource requests to the appropriate resource class based on the URL pattern.
 		Router router = new Router(getContext());
-		router.attach("/widgets", WidgetsResource.class);
-		router.attach("/widgets/{id}", WidgetResource.class);
-
+	  	router.attach("/v1/users/{name}", UserResource.class);
+	  	router.attach("/v1/users", UsersResource.class);
+	/*
 		// This page is going to show up if somebody access the default page of the web server.
 		Restlet mainpage = new Restlet() {
 			@Override
@@ -72,7 +75,7 @@ public class WebServiceApplication extends Application {
 			}
 		};
 		router.attach("", mainpage);
+	*/
 		return router;
 	}
-
 }
