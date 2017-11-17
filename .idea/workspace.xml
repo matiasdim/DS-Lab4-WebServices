@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b7aa6352-27c8-4177-b3f2-19c41b48bf2d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/gvsu/restapi/WebServiceApplication.java" afterPath="$PROJECT_DIR$/src/main/java/edu/gvsu/restapi/WebServiceApplication.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/appengine-web.xml" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/appengine-web.xml" />
-    </list>
+    <list default="true" id="b7aa6352-27c8-4177-b3f2-19c41b48bf2d" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -358,12 +355,12 @@
       <workItem from="1510881877407" duration="1295000" />
       <workItem from="1510947281331" duration="767000" />
       <workItem from="1510949909943" duration="2762000" />
-      <workItem from="1510953311039" duration="4976000" />
+      <workItem from="1510953311039" duration="5117000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9800000" />
+    <option name="totallyTimeSpent" value="9941000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="773" extended-state="6" />
