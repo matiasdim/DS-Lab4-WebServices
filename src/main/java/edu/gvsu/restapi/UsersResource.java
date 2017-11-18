@@ -17,7 +17,7 @@ import org.restlet.resource.ServerResource;
 import java.util.List;
 
 public class UsersResource extends ServerResource {
-    private List<RegistrationInfo> users = null;
+    private List<User> users = null;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -25,13 +25,12 @@ public class UsersResource extends ServerResource {
 
         this.users = ObjectifyService.ofy()
                 .load()
-                .type(RegistrationInfo.class) // We want only Users
+                .type(User.class) // We want only Users
                 .list();
 
         // these are the representation types this resource can use to describe the
         // set of users with.
         getVariants().add(new Variant(MediaType.APPLICATION_JSON));
-
     }
 
     /**
@@ -48,19 +47,12 @@ public class UsersResource extends ServerResource {
             ErrorMessage em = new ErrorMessage();
             return representError(variant, em);
         } else {
-
-            if (variant.getMediaType().equals(MediaType.APPLICATION_JSON)) {
-
-                JSONArray usersArray = new JSONArray();
-                for(Object user : this.users) {
-                    RegistrationInfo u = (RegistrationInfo)user;
-                    usersArray.put(u.toJSON());
-                }
-                result = new JsonRepresentation(usersArray);
-            } else {
-                ErrorMessage em = new ErrorMessage();
-                return representError(variant, em);
+            JSONArray usersArray = new JSONArray();
+            for(Object user : this.users) {
+                User u = (User)user;
+                usersArray.put(u.toJSON());
             }
+            result = new JsonRepresentation(usersArray);
         }
         return result;
     }
@@ -86,11 +78,11 @@ public class UsersResource extends ServerResource {
             {
                 // Use the incoming data in the POST request to create/store a new user resource.
                 Form form = new Form(entity);
-                RegistrationInfo user = new RegistrationInfo();
-                user.setUserName(form.getValues("userName"));
-                user.setHost(form.getValues("host"));
-                user.setStatus(Boolean.valueOf(form.getValues("status")));
-                user.setPort(Integer.parseInt(form.getValues("port")));
+                User user = new User();
+                user.setUserName(form.getFirstValue("userName"));
+                user.setHost(form.getFirstValue("host"));
+                user.setStatus(Boolean.valueOf(form.getFirstValue("status")));
+                user.setPort(Integer.parseInt(form.getFirstValue("port")));
 
                 // persist updated object
                 ObjectifyService.ofy().save().entity(user).now();

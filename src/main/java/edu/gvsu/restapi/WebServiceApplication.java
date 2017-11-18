@@ -21,8 +21,6 @@ import java.util.Vector;
  */
 public class WebServiceApplication extends Application {
 
-	Vector<RegistrationInfo> users = new Vector<>();
-
 	public static void main(String[] args) throws Exception {
 
 		// Create a component
@@ -43,17 +41,17 @@ public class WebServiceApplication extends Application {
 		super();
 	}
 
-  /**
-   * Creates a root Restlet that will receive all incoming calls.
-   */
-  @Override
-  public Restlet createInboundRoot() {
+	/**
+	* Creates a root Restlet that will receive all incoming calls.
+	*/
+	@Override
+	public Restlet createInboundRoot() {
 
 		// Have the router, route resource requests to the appropriate resource class based on the URL pattern.
 		Router router = new Router(getContext());
-	  	router.attach("/v1/users/{name}", UserResource.class);
-	  	router.attach("/v1/users", UsersResource.class);
-	/*
+		router.attach("/v1/users/{userName}", UserResource.class);
+		router.attach("/v1/users", UsersResource.class);
+
 		// This page is going to show up if somebody access the default page of the web server.
 		Restlet mainpage = new Restlet() {
 			@Override
@@ -62,20 +60,19 @@ public class WebServiceApplication extends Application {
 
 				stringBuilder.append("<html>");
 				stringBuilder
-				.append("<head><title>Sample Application Default Page</title></head>");
+					  .append("<head><title>Sample Application Default Page</title></head>");
 				stringBuilder.append("<body bgcolor=white>");
 				stringBuilder.append("<h1>I am an example webserver that supports RESTful web services</h1>");
-				stringBuilder.append("Click <a href=\"/widgets\">here</a> to see all my widgets.");
+				stringBuilder.append("Click <a href=\"/v1/users\">here</a> to see all my users.");
 				stringBuilder.append("</body>");
 				stringBuilder.append("</html>");
 
 				response.setEntity(new StringRepresentation(stringBuilder
-						.toString(), MediaType.TEXT_HTML));
+					  .toString(), MediaType.TEXT_HTML));
 
 			}
 		};
-		router.attach("", mainpage);
-	*/
+		router.attach("/", mainpage);
 		return router;
 	}
 }

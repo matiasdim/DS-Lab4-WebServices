@@ -12,23 +12,23 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.*;
 
 public class UserResource extends ServerResource {
-    private RegistrationInfo user = null;
+    private User user = null;
     @Override
     public void doInit() {
 
         // URL requests routed to this resource have the user name on them.
         String userName = null;
-        userName = (String) getRequest().getAttributes().get("name");
+        userName = (String) getRequest().getAttributes().get("userName");
 
         // lookup the user in google's persistance layer.
-        Key<RegistrationInfo> theKey = Key.create(RegistrationInfo.class, Long.valueOf(userName));
+        Key<User> theKey = Key.create(User.class, userName);
         this.user = ObjectifyService.ofy()
                 .load()
                 .key(theKey)
                 .now();
 
         // these are the representation types this resource supports.
-        //getVariants().add(new Variant(MediaType.TEXT_HTML));
+        getVariants().add(new Variant(MediaType.TEXT_HTML));
         getVariants().add(new Variant(MediaType.APPLICATION_JSON));
     }
 
@@ -46,12 +46,7 @@ public class UserResource extends ServerResource {
             ErrorMessage em = new ErrorMessage();
             return representError(variant, em);
         } else {
-            if (variant.getMediaType().equals(MediaType.APPLICATION_JSON)) {
-                result = new JsonRepresentation(this.user.toJSON());
-            } else {
-                ErrorMessage em = new ErrorMessage();
-                return representError(variant, em);
-            }
+            result = new JsonRepresentation(this.user.toJSON());
         }
         return result;
     }
@@ -74,27 +69,22 @@ public class UserResource extends ServerResource {
                 getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
                 return rep;
             }
-            if (entity.getMediaType().equals(MediaType.APPLICATION_WWW_FORM,
-                    true)) {
-                Form form = new Form(entity);
-                this.user.setUserName(form.getValues("userName"));
-                this.user.setHost(form.getValues("host"));
-                this.user.setStatus(Boolean.valueOf(form.getValues("status")));
-                this.user.setPort(Integer.parseInt(form.getValues("port")));
 
-                // persist object
-                ObjectifyService.ofy()
-                        .save()
-                        .entity(this.user)
-                        .now();
+            Form form = new Form(entity);
+            this.user.setUserName(form.getFirstValue("userName"));
+            this.user.setHost(form.getFirstValue("host"));
+            this.user.setStatus(Boolean.valueOf(form.getFirstValue("status")));
+            this.user.setPort(Integer.parseInt(form.getFirstValue("port")));
 
-                getResponse().setStatus(Status.SUCCESS_OK);
-                rep = new JsonRepresentation(this.user.toJSON());
-                getResponse().setEntity(rep);
+            // persist object
+            ObjectifyService.ofy()
+                    .save()
+                    .entity(this.user)
+                    .now();
 
-            } else {
-                getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
-            }
+            getResponse().setStatus(Status.SUCCESS_OK);
+            rep = new JsonRepresentation(this.user.toJSON());
+            getResponse().setEntity(rep);
         } catch (Exception e) {
             getResponse().setStatus(Status.SERVER_ERROR_INTERNAL);
         }
