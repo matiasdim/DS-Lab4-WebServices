@@ -70,6 +70,13 @@ public class UserResource extends ServerResource {
                 return rep;
             }
 
+            /* If using PATCH
+            Form form = new Form(entity);
+            this.user.setUserName(form.getFirstValue("userName", false, this.user.getUserName()));
+            this.user.setUserName(form.getFirstValue("host", false, this.user.getHost()));
+            this.user.setStatus(Boolean.valueOf(form.getFirstValue("status")));
+            this.user.setUserName(form.getFirstValue("port", false, Integer.toString(this.user.getPort())));
+            */
             Form form = new Form(entity);
             this.user.setUserName(form.getFirstValue("userName"));
             this.user.setHost(form.getFirstValue("host"));
